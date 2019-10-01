@@ -1,7 +1,7 @@
 name: museotoolbox
 dependencies:
         - python=3.7
-        - GDAL
+        - libgdal=2.3.*
         - pip:
            - museotoolbox           
            - joblib
