@@ -22,14 +22,18 @@ Il n'y a pas de prérequis en programmation nécessaire, mais des connaissances 
 
 ### Sous Windows
 
-Le plus simple est de passer sous Ubuntu :) Plus sérieusement, je vous conseillerai d'installer un environnement CONDA, notamment pour avoir accès à GDAL depuis python.
+Le plus simple est de passer sous Ubuntu :) Plus sérieusement, je vous conseillerais d'installer un environnement Conda, notamment pour avoir accès à GDAL depuis python.
 
 Petit guide pour installer un environnement python avec conda : [https://zestedesavoir.com/tutoriels/1448/installer-un-environnement-de-developpement-python-avec-conda/](https://zestedesavoir.com/tutoriels/1448/installer-un-environnement-de-developpement-python-avec-conda/)
+
+Puis déployer l'environnement CONDA suivant :
+**TODO** fournir fichier environnement conda avec dépendences à installer.
 
 ### Sous Ubuntu
 
 #### Installation de GDAL
 
+Dans le terminal, ajouter les dépôts ubuntugis et installer les dépendances (gdal et spyder3 pour programmer python) :
 ```
 sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
 
@@ -39,6 +43,10 @@ sudo apt install spyder3 gdal-bin=2.2.3* libgdal-dev=2.2.3* python3-gdal=2.2.3*
 ```
 
 #### Installation de MuseoToolBox
+Dans le terminal, taper la commande suivante pour installer museotoolbox :
 ```
 python3 -m pip install museotoolbox --user
 ```
+
+Ensuite, vérifier si museotoolbox est bien installé en tapant la commande suivante :  
+`python3 -c 'import museotoolbox'
