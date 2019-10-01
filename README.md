@@ -1,21 +1,19 @@
 # Atelier SAGEO2019 : Télédétection avec MuseoToolBox
 *Cet atelier ne nécessite pas de compétences avancées en python*
 
-[MuseoToolBox](https://github.com/lennepkade/MuseoToolBox]) est une bibliothèque python développée par [Nicolas Karasiak](http://wwww.karasiak.net) lors de sa thèse sur la classification des essences forestières. Dans un soucis de reproductibilité de ses travaux (que ce soit tant pour lui, pour la fiabilité de ses travaux ou pour promouvoir les bonnes pratiques), cette bibliothèque permet de se soucier que ce qu'il vous importe le plus.
-
-Plus besoin de gérer les nombreux à-côtés parfois longs et fastidieux de la gestion des rasters ou des vecteurs en python (lecture/écriture et traitement des images, opération mathématique sur un raster, extraction des valeurs des pixels pour chaque polygone...).
+[MuseoToolBox](https://github.com/lennepkade/MuseoToolBox]) est une bibliothèque python développée par [Nicolas Karasiak](http://wwww.karasiak.net) dans le cadre de sa thèse sur la classification des essences forestières. Dans un soucis de reproductibilité de ses travaux (que ce soit tant pour lui, pour la fiabilité de ses travaux ou pour promouvoir les bonnes pratiques), cette bibliothèque permet d'automatiser et de faciliter de nombreuses opérations courantes dans notre domaine. En effet, plus besoin de gérer les nombreux à-côtés parfois longs et fastidieux de la gestion des rasters ou des vecteurs en python (lecture/écriture des images avec compression automatique, opération mathématique sur un raster, extraction des valeurs des pixels pour chaque polygone, apprentissage automatique à partir de raster...).
 
 ## Objectif de l'atelier
 
-L'objectif principal de l'atelier et de réaliser, à partir d'images géoréférencées, de nombreuses opérations sous python :
+L'objectif principal de l'atelier et de réaliser, à partir d'une image géoréférencée ou d'une série temporelle, des opérations courantes mais en quelques lignes de codes seulement :
 
 - calcul d'un indice spectral (de type NDVI)
-- lissage d'un signal temporel (filtre moyen)
+- lissage d'un signal temporel
 - apprentissage automatique optimisé (avec standardisation des données et paramètres optimisés de l'algorithme)
-- prédire un modèle sur une autre zone d'étude
-- réduire la dimension de la donnée
+- prédire un modèle sur sa zone d'étude
+- estimer la qualité du modèle et générer des matrices de confusions évoluées (avec précision producteur et réalisateur, ou score F1)
 
-L'idée est de vous montrer les bases de MuseoToolBox qui vous permettront de vous sentir libre plus tard et ainsi de l'utiliser afin de vous faciliter de nombreux traitements.
+L'idée de cet atelier est de vous montrer les bases de MuseoToolBox qui vous permettront de vous sentir libre et de vous faciliter par la suite de nombreux traitements courants dans notre domaine.
 
 ## Prérequis
 Il n'y a pas de prérequis en programmation nécessaire, mais des connaissances en python vous aideront certainement à comprendre plus vite cet outil.
@@ -48,5 +46,5 @@ Dans le terminal, taper la commande suivante pour installer museotoolbox :
 python3 -m pip install museotoolbox --user
 ```
 
-Ensuite, vérifier si museotoolbox est bien installé en tapant la commande suivante :  
+Ensuite, vérifier si museotoolbox est bien installé en tapant la commande suivante :
 `python3 -c 'import museotoolbox'
