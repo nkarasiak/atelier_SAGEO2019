@@ -9,11 +9,12 @@ L'objectif principal de l'atelier et de réaliser, à partir d'une image géoré
 
 - calcul d'un indice spectral (de type NDVI)
 - lissage d'un signal temporel
+- sélection d'un algorithme et d'une validation croisée
 - apprentissage automatique optimisé (avec standardisation des données et paramètres optimisés de l'algorithme)
 - prédire un modèle sur sa zone d'étude
 - estimer la qualité du modèle et générer des matrices de confusions évoluées (avec précision producteur et réalisateur, ou score F1)
 
-L'idée de cet atelier est de vous montrer les bases de MuseoToolBox qui vous permettront de vous sentir libre et de vous faciliter par la suite de nombreux traitements courants dans notre domaine.
+L'idée de cet atelier est de vous familiariser avec MuseoToolBox en construisant ensemble une chaîne de traitements avec les nombreux traitements courants dans notre domaine.
 
 ## Prérequis
 Il n'y a pas de prérequis en programmation nécessaire, mais des connaissances en python vous aideront certainement à comprendre plus vite cet outil.
