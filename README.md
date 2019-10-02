@@ -52,4 +52,7 @@ python3 -m pip install museotoolbox --user
 ```
 
 Ensuite, vérifier si museotoolbox est bien installé en tapant la commande suivante :
-`python3 -c 'import museotoolbox'
+
+`python3 -c 'import museotoolbox' `
+
+Si aucun message d'erreur n'apparait, l'atelier est prêt à commencer.
