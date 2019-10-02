@@ -3,7 +3,7 @@
 
 [MuseoToolBox](https://github.com/lennepkade/MuseoToolBox]) est une bibliothèque python développée par [Nicolas Karasiak](http://wwww.karasiak.net) dans le cadre de sa thèse sur la classification des essences forestières. Dans un soucis de reproductibilité de ses travaux (que ce soit tant pour lui, pour la fiabilité de ses travaux ou pour promouvoir les bonnes pratiques), cette bibliothèque permet d'automatiser et de faciliter de nombreuses opérations courantes dans notre domaine. En effet, plus besoin de gérer les nombreux à-côtés parfois longs et fastidieux de la gestion des rasters ou des vecteurs en python (lecture/écriture des images avec compression automatique, opération mathématique sur un raster, extraction des valeurs des pixels pour chaque polygone, apprentissage automatique à partir de raster ou de son indice généré à la volée...).
 
-[Une documentation incluant de nombreux exemple est disponible en ligne](https://museotoolbox.readthedocs.io/).
+[Une documentation incluant de nombreux exemples est disponible en ligne](https://museotoolbox.readthedocs.io/).
 ## Objectif de l'atelier
 
 L'objectif principal de l'atelier et de réaliser, à partir d'une image géoréférencée ou d'une série temporelle, des opérations courantes mais en quelques lignes de codes seulement :
@@ -25,8 +25,8 @@ Il n'y a pas de prérequis en programmation nécessaire, mais des connaissances 
 
 Le plus simple est de passer sous Ubuntu :) Plus sérieusement, je vous conseillerais d'installer un environnement anaconda, notamment pour avoir accès à GDAL depuis python.
 
-- (Télécharger et installer Anaconda pour Python 3)[https://www.anaconda.com/distribution/]
-- (Sauvegarder le fichier de configuration de l'environnement python) [https://raw.githubusercontent.com/lennepkade/atelier_SAGEO2019/master/py3mtbenv.yml]
+- [Télécharger et installer Anaconda pour Python 3](https://www.anaconda.com/distribution/)
+- [Sauvegarder le fichier de configuration de l'environnement python](https://raw.githubusercontent.com/lennepkade/atelier_SAGEO2019/master/py3mtbenv.yml)
 - Ouvrir `Anaconda Navigator`
 - Cliquer sur l'onglet `Environments`
 - Cliquer sur l'icône `Import`
