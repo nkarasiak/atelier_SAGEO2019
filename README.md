@@ -41,8 +41,6 @@ Dans le terminal, ajouter les dépôts ubuntugis et installer les dépendances (
 ```
 sudo add-apt-repository ppa:ubuntugis/ppa && sudo apt-get update
 
-sudo apt update
-
 sudo apt install spyder3 gdal-bin=2.2.3* libgdal-dev=2.2.3* python3-gdal=2.2.3*
 ```
 
