@@ -23,10 +23,13 @@ Il n'y a pas de prérequis en programmation nécessaire, mais des connaissances 
 
 Le plus simple est de passer sous Ubuntu :) Plus sérieusement, je vous conseillerais d'installer un environnement Conda, notamment pour avoir accès à GDAL depuis python.
 
-Petit guide pour installer un environnement python avec conda : [https://zestedesavoir.com/tutoriels/1448/installer-un-environnement-de-developpement-python-avec-conda/](https://zestedesavoir.com/tutoriels/1448/installer-un-environnement-de-developpement-python-avec-conda/)
-
-Puis déployer l'environnement CONDA suivant :
-**TODO** fournir fichier environnement conda avec dépendences à installer.
+- (Télécharger et installer Anaconda pour Python 3)[https://www.anaconda.com/distribution/]
+- (Sauvegarder le fichier de configuration de l'environnement python) [https://raw.githubusercontent.com/lennepkade/atelier_SAGEO2019/master/py3mtbenv.yml]
+- Ouvrir `Anaconda Navigator`
+- Cliquer sur l'onglet `Environments`
+- Cliquer sur l'icône `Import`
+- Nommer l'environnement `MuseoToolBox` et choissisez le fichier précédemment enregistré (`py3mtbenv.yml`).
+- Retourner sur l'onglet `Accueil`, choissisez bien MuseoToolBox et installer Spyder ainsi que Notebook.
 
 ### Sous Ubuntu
 
