@@ -2,6 +2,7 @@
 marp: true
 title : Démonstration de museotoolbox
 paginate : true
+author : nicolas karasiak
 ---
 <style>
 img[alt~="center"] {
@@ -129,7 +130,7 @@ from museotoolbox.learn_tools import learnAndPredict
 
 mymodel = LAP = learnAndPredict(n_jobs=4,verbose=1)
 LAP.learnFromRaster(raster,vector,field,cv=5,
-                    classifier=classifier,param_grid=dict(n_estimators=[100,200]),sc)
+                    classifier=classifier,param_grid=dict(n_estimators=[100,200]))
 ```
 
 Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict
