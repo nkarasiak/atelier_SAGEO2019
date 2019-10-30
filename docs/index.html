@@ -28,7 +28,7 @@
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="3" data-paginate="true" data-marpit-pagination="3" data-marpit-pagination-total="11" style="--paginate:true;">
 <h1>Qu'est-ce que MuseoToolBox ?</h1>
 <p>MuseoToolBox est une bibliothèque dévelopée en python3 par <a href="https://www.karasiak.net">Nicolas Karasiak</a>.</p>
-<p><img src="mtb_uml.png" alt="center" /></p>
+<p><img src="figures/mtb_uml.png" alt="center" /></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="4" data-paginate="true" data-marpit-pagination="4" data-marpit-pagination-total="11" style="--paginate:true;">
 <h2>Principe de rasterMath</h2>
@@ -37,7 +37,7 @@
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="5" data-paginate="true" data-marpit-pagination="5" data-marpit-pagination-total="11" style="--paginate:true;">
 <p><strong>rasterMath</strong> permet donc de lire une image et de ne recevoir que l'information par lot de pixels :</p>
-<p><img src="raster_math_3dto2d.png" alt="center" /></p>
+<p><img src="figures/raster_math_3dto2d.png" alt="center" /></p>
 </section>
 </foreignObject></svg><svg data-marpit-svg="" viewBox="0 0 1280 720"><foreignObject width="1280" height="720"><section id="6" data-paginate="true" data-marpit-pagination="6" data-marpit-pagination-total="11" style="--paginate:true;">
 <p>Ainsi, vous n'avez plus besoin de gérer les projections géographiques, l'ouverture et la fermeture de l'image, la gestion des no-data ou encore la compression.<br />
@@ -104,7 +104,7 @@ classifier = RandomForestClassifier(random_state=<span class="hljs-number">12</s
 
 mymodel = LAP = learnAndPredict(n_jobs=<span class="hljs-number">4</span>,verbose=<span class="hljs-number">1</span>)
 LAP.learnFromRaster(raster,vector,field,cv=<span class="hljs-number">5</span>,
-                    classifier=classifier,param_grid=dict(n_estimators=[<span class="hljs-number">100</span>,<span class="hljs-number">200</span>]),sc)
+                    classifier=classifier,param_grid=dict(n_estimators=[<span class="hljs-number">100</span>,<span class="hljs-number">200</span>]))
 </span></span></foreignObject></svg></code></pre>
 <p>Plus d'exemples sur : <a href="https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict">https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict</a></p>
 </section>

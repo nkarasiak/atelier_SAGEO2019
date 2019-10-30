@@ -36,7 +36,7 @@ L'objectif de cet atelier est :
 # Qu'est-ce que MuseoToolBox ?
 MuseoToolBox est une bibliothèque dévelopée en python3 par [Nicolas Karasiak](https://www.karasiak.net).
 
-![center](mtb_uml.png)
+![center](figures/mtb_uml.png)
 
 ---
 
@@ -50,7 +50,7 @@ La plupart des utilisations d'un raster dans notre domaine se fait pixel par pix
 
 **rasterMath** permet donc de lire une image et de ne recevoir que l'information par lot de pixels :
 
-![center](raster_math_3dto2d.png)
+![center](figures/raster_math_3dto2d.png)
 
  
  ---
