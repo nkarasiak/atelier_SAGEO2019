@@ -15,7 +15,11 @@ theme: gaia
 
 Comment faciliter les principaux traitements de la télédétection ?
 
+Présentation sur https://nkarasiak.github.io/atelier_SAGEO2019/
+TD sur https://www.github.com/nkarasiak/atelier_SAGEO2019
+
 ###### Par [Nicolas Karasiak](https://www.karasiak.net/)
+
 
 ----
 
@@ -123,6 +127,57 @@ rM.run()
  
 ---
 
+### Exercice : calculer l'indice de chlorophylle (LChloC)
+
+Données à télécharger ici : https://github.com/nkarasiak/atelier_SAGEO2019/archive/data.zip (ou https://git.io/Je28w)
+
+Les bandes du fichier *sentinel2_3a_20180815.vrt* sont ordonnées de la manière suivante : B2, B3, B4, B8, B5, B6, B7, B8A, B11, B12. 
+
+L'indice de chlorophylle est le quotient du rededge 3 (B7) et le rededge 1 (B5).
+
+---
+
+### Solution
+
+```python
+import museotoolbox as mtb
+rM = mtb.raster_tools.rasterMath("sentinel2_3a_20180815.vrt")
+
+def calcul_LChloC(X):
+    return np.divide(X[:,6],X[:,4])
+
+# Je teste si cela fonctionne
+X = rM.getRandomBlock()
+print(calcul_LChloC(X)) 
+
+# j'ajoute la fonction et l'image à écrire
+rM.addFunction(calcul_LChloC,'/tmp/LChloC.tif')
+
+# je lance le calcul
+rM.run()
+```
+---
+
+## Extraire les valeurs spectrales et les labels d'un vecteur
+
+```python
+from museotoolbox.raster_tools import getSamplesFromROI
+
+# extraire uniquement les valeurs spectrales
+X = getSamplesFromROI(raster,vector)
+
+# extraire les valeurs spectrales et la valeur de la colonne 'class'
+X,y = getSamplesFromROI(raster,vector,'class')
+
+# extraire les valeurs spectrales et deux colonnes ('class' et 'uniquefid')
+X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','uniquefid')
+```
+
+Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/raster_tools/extractRasterValues.html
+
+
+---
+
 ## Principes de learnAndPredict
 
 Permet de faire de l'apprentissage automatique depuis un raster ou un vecteur. Vous choisissez : 
@@ -141,24 +196,50 @@ Permet de faire de l'apprentissage automatique depuis un raster ou un vecteur. V
 
 ---
 
+## Préparation du modèle
+
 ```python
 from sklearn.ensemble import RandomForestClassifier
 classifier = RandomForestClassifier(random_state=12,n_jobs=1)
 
-from museotoolbox.learn_tools import learnAndPredict
+import museotoolbox as mtb
+
+raster,vector = mtb.datasets.historicalMap()
 
 # initialisation de la classe avec 4 coeurs pour les validations croisées
-mymodel = learnAndPredict(n_jobs=4,verbose=1)
+mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
 
+```
+
+Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict
+
+---
+
+### Apprentissage à partir d'un vecteur
+```python
+X,y = mtb.raster_tools.getSamplesFromROI(raster,vector,'Class')
+
+# entrainement à partir d'un vecteur avec standardisation (centré/réduit)
+mymodel.learnFromVector(X,y,field,cv=5,
+    classifier=classifier,
+    param_grid=dict(n_estimators=[100,200]),
+    standardize=True)
+
+# prédiction d'un raster (même nombre de bandes que le tableau X)
+mymodel.predictRaster(raster,'classification.tif')
+```
+---
+### Apprentissage à partir d'un raster
+```python
 # entrainement à partir d'un raster
-mymodel.learnFromRaster(raster,vector,field,cv=5,
-                    classifier=classifier,param_grid=dict(n_estimators=[100,200]))
+mymodel.learnFromRaster(raster,vector,'Class',cv=5,
+    classifier=classifier,
+    param_grid=dict(n_estimators=[100,200]),
+    standardize=True)
 
 # prédiction d'un raster
 mymodel.predictRaster(raster,'classification.tif')
 ```
-
-Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict
 
 ---
 
@@ -197,24 +278,6 @@ pltCM.addF1()
 
 ---
 
-## Extraire les valeurs spectrales et les labels d'un vecteur
-
-```python
-from museotoolbox.raster_tools import getSamplesFromROI
-
-# extraire uniquement les valeurs spectrales
-X =  getSamplesFromROI(raster,vector)
-
-# extraire les valeurs spectrales et le label du vecteur
-X,y = getSamplesFromROI(raster,vector,'class')
-
-# extraire les valeurs spectrales et deux champs
-X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','uniquefid')
-```
-
-Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/raster_tools/extractRasterValues.html
-
----
 ## Créer un masque à partir d'un vecteur
 
 ```python
