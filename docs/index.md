@@ -158,21 +158,22 @@ rM.run()
 ```
 ---
 
-## Extraire les valeurs spectrales et les labels d'un vecteur
+## Extraire les valeurs spectrales d'un vecteur
 
 ```python
-from museotoolbox.raster_tools import getSamplesFromROI
+import museotoolbox as mtb
+# importation d'un raster et d'un vecteur
+raster,vector = mtb.datasets.historicalMap()
 
 # extraire uniquement les valeurs spectrales
-X = getSamplesFromROI(raster,vector)
+X = mtb.raster_tools.getSamplesFromROI(raster,vector)
 
 # extraire les valeurs spectrales et la valeur de la colonne 'class'
-X,y = getSamplesFromROI(raster,vector,'class')
+X,y = mtb.raster_tools.getSamplesFromROI(raster,vector,'class')
 
 # extraire les valeurs spectrales et deux colonnes ('class' et 'uniquefid')
 X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','uniquefid')
 ```
-
 Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/raster_tools/extractRasterValues.html
 
 
