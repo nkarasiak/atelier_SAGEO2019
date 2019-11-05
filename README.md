@@ -9,7 +9,6 @@
 L'objectif principal de l'atelier et de réaliser, à partir d'une image géoréférencée ou d'une série temporelle, des opérations courantes mais en quelques lignes de codes seulement :
 
 - calcul d'un indice spectral (de type NDVI)
-- lissage d'un signal temporel
 - sélection d'un algorithme et d'une validation croisée
 - apprentissage automatique optimisé (avec standardisation des données et paramètres optimisés de l'algorithme)
 - prédire un modèle sur sa zone d'étude
