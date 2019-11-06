@@ -4,7 +4,9 @@ title : Démonstration de museotoolbox
 paginate : true
 author : nicolas karasiak
 theme: gaia
+
 ---
+
 <!-- Global style -->
 <style> img[alt~="center"] { display: block; margin: 0 auto; } </style>
 
@@ -15,8 +17,8 @@ theme: gaia
 
 Comment faciliter les principaux traitements de la télédétection ?
 
-Présentation sur https://nkarasiak.github.io/atelier_SAGEO2019/
-TD sur https://www.github.com/nkarasiak/atelier_SAGEO2019
+https://www.github.com/nkarasiak/atelier_SAGEO2019
+
 
 ###### Par [Nicolas Karasiak](https://www.karasiak.net/)
 
@@ -80,7 +82,6 @@ La plupart des utilisations d'un raster dans notre domaine se fait pixel par pix
  - le type de données GDAL (conversion automatique depuis le type de données de numpy)
 
 :bulb: Vous vous concentrez uniquement sur votre traitement.
- 
  
  ---
 
