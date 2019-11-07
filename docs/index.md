@@ -4,14 +4,12 @@ title : Démonstration de museotoolbox
 paginate : true
 author : nicolas karasiak
 theme: gaia
-
 ---
-
 <!-- Global style -->
 <style> img[alt~="center"] { display: block; margin: 0 auto; } </style>
 
-
-## Démonstration de MuseoToolBox
+Démonstration de MuseoToolBox
+---
 
 ![right 100%](https://github.com/nkarasiak/MuseoToolBox/raw/master/metadata/museoToolBox_logo_128.png)
 
@@ -60,6 +58,18 @@ python3 -m pip install museotoolbox --user -U
 Voir le tutorial ici : https://github.com/nkarasiak/atelier_SAGEO2019
 
 ---
+
+## Télécharger le jeu de démo de l'atelier
+
+![bg left](figures/s2demo.png)
+
+- **raster** : synthèse août 2018 de Sentinel-2 (Theia)
+- **vecteur** : Un jeu de données d'entrainements (8 classes)
+
+À télécharger sur : https://git.io/Je28w
+
+---
+
 ## Principe de rasterMath
 rasterMath est la clé de voute de MuseoToolBox. Cette classe est utilisée pour lire et écrire sur les images de manière optimisée.
 
@@ -85,6 +95,46 @@ La plupart des utilisations d'un raster dans notre domaine se fait pixel par pix
  
  ---
 
+## Principe de rasterMath avec numpy
+
+```python
+import numpy as np
+import museotoolbox as mtb
+
+raster = 'sentinel2_31_20180815.tif'
+# J'initialise l'instance rasterMath
+rM = rasterMath(raster)
+
+# Je demande un échantillon de mon image
+X = rM.getRandomBlock()
+
+# La dimension de l'échantillon
+print(X.shape)
+>>> (15840, 10)
+# mon échantillon contient 15840 pixels de 10 bandes chacun
+# J'affiche la totalité
+print(X) 
+ ```
+ ---
+
+ ## Principe de numpy
+
+ ```python
+ # Je veux pour chaque pixel la première bande
+ X[:,0] 
+
+ # Je veux pour le pemier pixel l'ensemble des andes
+ X[0,:] 
+ 
+ # Je veux diviser la bande 2 par la bande 1
+ X[:,1] / X[:,0]
+ #ou
+ np.divide(X[:,1],X[:,0])
+ 
+ ```
+
+ ---
+ 
  ### Calcul d'un NDVI
  
  Supposons que nous voulons calculer un NDVI avec les bandes 3 et 4 (donc comme en python commence à compter à partir de 0, il s'agira des bandes 2 et 3) :
@@ -103,23 +153,20 @@ Après avoir écrit votre fonction `calcul_ndvi`, il faut donc la tester.
 Pour cela, on va demander à rasterMath un bloc de l'image source.
 
 ```python
-rM = rasterMath('monimage.tif')
-
-# x est un bloc de mon image
-x = rM.getRandomBlock()
-
 # Je peux donc le donner à la fonction calcul_ndvi
 calcul_ndvi(x)
 ```
+
+Il faut maintenant l'ajouter à votre instance de rasterMath.
+
 ---
 
 ### Calculer et écrire le NDVI
 
 ```python
-rM = rasterMath('monimage.tif')
 
 # Ajoute une fonction et un chemin pour écrire le résultat (fichier tif)
-rM.addFunction(ajout_ndvi,'/tmp/ndvi.tif')
+rM.addFunction(calcul_ndvi,'/tmp/ndvi.tif')
 
 # Je lance le calcul et l'écriture
 rM.run()
@@ -130,29 +177,24 @@ rM.run()
 
 ### Exercice : calculer l'indice de chlorophylle (LChloC)
 
-Données à télécharger ici : https://github.com/nkarasiak/atelier_SAGEO2019/archive/data.zip (ou https://git.io/Je28w)
-
-Les bandes du fichier *sentinel2_3a_20180815.vrt* sont ordonnées de la manière suivante : B2, B3, B4, B8, B5, B6, B7, B8A, B11, B12. 
+Les bandes du fichier *sentinel2_3a_20180815.tif* sont ordonnées de la manière suivante : B2, B3, B4, B8, B5, B6, B7, B8A, B11, B12. 
 
 L'indice de chlorophylle est le quotient du rededge 3 (B7) et le rededge 1 (B5).
 
 ---
-
 ### Solution
-
 ```python
 import museotoolbox as mtb
-rM = mtb.raster_tools.rasterMath("sentinel2_3a_20180815.vrt")
+rM = mtb.raster_tools.rasterMath(raster)
 
 def calcul_LChloC(X):
     return np.divide(X[:,6],X[:,4])
-
 # Je teste si cela fonctionne
 X = rM.getRandomBlock()
 print(calcul_LChloC(X)) 
 
-# j'ajoute la fonction et l'image à écrire
-rM.addFunction(calcul_LChloC,'/tmp/LChloC.tif')
+# LChloC
+rM.addFunction(calcul_LChloC,'/tmp/LChloC.tif',outNoData=-100)
 
 # je lance le calcul
 rM.run()
@@ -163,17 +205,17 @@ rM.run()
 
 ```python
 import museotoolbox as mtb
-# importation d'un raster et d'un vecteur
-raster,vector = mtb.datasets.historicalMap()
 
+raster = 'sentinel2_31_20180815.tif'
+vector = 'ROI.gpkg'
 # extraire uniquement les valeurs spectrales
 X = mtb.raster_tools.getSamplesFromROI(raster,vector)
 
 # extraire les valeurs spectrales et la valeur de la colonne 'class'
 X,y = mtb.raster_tools.getSamplesFromROI(raster,vector,'class')
 
-# extraire les valeurs spectrales et deux colonnes ('class' et 'uniquefid')
-X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','uniquefid')
+# extraire les valeurs spectrales et deux colonnes (exemple avec 2 fois 'class')
+X,y,g = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','group')
 ```
 Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/raster_tools/extractRasterValues.html
 
@@ -204,13 +246,12 @@ Permet de faire de l'apprentissage automatique depuis un raster ou un vecteur. V
 from sklearn.ensemble import RandomForestClassifier
 classifier = RandomForestClassifier(random_state=12,n_jobs=1)
 
-import museotoolbox as mtb
-
-raster,vector = mtb.datasets.historicalMap()
-
 # initialisation de la classe avec 4 coeurs pour les validations croisées
+# verbose=1 signifie qu'on aura des infos lors de l'apprentissage
 mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
 
+# crée une validation croisée par groupe (LOO par groupe)
+cv = mtb.cross_validation.LeaveOneSubGroupOut()
 ```
 
 Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict
@@ -219,10 +260,10 @@ Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/lear
 
 ### Apprentissage à partir d'un vecteur
 ```python
-X,y = mtb.raster_tools.getSamplesFromROI(raster,vector,'Class')
+X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','group')
 
 # entrainement à partir d'un vecteur avec standardisation (centré/réduit)
-mymodel.learnFromVector(X,y,field,cv=5,
+mymodel.learnFromVector(X,y,group=group,cv=cv,
     classifier=classifier,
     param_grid=dict(n_estimators=[100,200]),
     standardize=True)
@@ -277,6 +318,25 @@ pltCM.addF1()
 ---
 # Résultat
 ![center](figures/cm_f1.png)
+
+---
+
+## Apprentissage à partir d'un indice générée à la volée
+```python 
+mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
+
+# toutes les données en entrée seront converties selon votre fonction
+mymodel.customizeX(calcul_LChloC)
+
+# le reste de la procédure est identifique
+mymodel.learnFromVector(X,y,group=group,cv=cv,
+    classifier=classifier,
+    param_grid=dict(n_estimators=[100,200]),
+    standardize=True)
+
+# prédiction d'un raster (même nombre de bandes que le tableau X)
+mymodel.predictRaster(raster,'classification_LChloC.tif')
+```
 
 ---
 
