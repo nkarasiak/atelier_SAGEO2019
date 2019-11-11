@@ -13,7 +13,7 @@ Démonstration de MuseoToolBox
 
 ![right 100%](https://github.com/nkarasiak/MuseoToolBox/raw/master/metadata/museoToolBox_logo_128.png)
 
-Comment faciliter les principaux traitements de la télédétection ?
+Comment faciliter les principaux traitements en télédétection ?
 
 https://www.github.com/nkarasiak/atelier_SAGEO2019
 
@@ -123,12 +123,12 @@ print(X)
  # Je veux pour chaque pixel la première bande
  X[:,0] 
 
- # Je veux pour le pemier pixel l'ensemble des andes
+ # Je veux pour le premier pixel l'ensemble des bandes
  X[0,:] 
  
  # Je veux diviser la bande 2 par la bande 1
  X[:,1] / X[:,0]
- #ou
+ # ou
  np.divide(X[:,1],X[:,0])
  
  ```
@@ -150,11 +150,11 @@ Il ne reste plus qu'à donner cette fonction à rasterMath. Le seul argument obl
 
 ### Tester votre code
 Après avoir écrit votre fonction `calcul_ndvi`, il faut donc la tester.
-Pour cela, on va demander à rasterMath un bloc de l'image source.
+Pour cela, on va donner à notre fonction un échantillon de notre image.
 
 ```python
 # Je peux donc le donner à la fonction calcul_ndvi
-calcul_ndvi(x)
+calcul_ndvi(X)
 ```
 
 Il faut maintenant l'ajouter à votre instance de rasterMath.
@@ -194,7 +194,7 @@ X = rM.getRandomBlock()
 print(calcul_LChloC(X)) 
 
 # LChloC
-rM.addFunction(calcul_LChloC,'/tmp/LChloC.tif',outNoData=-100)
+rM.addFunction(calcul_LChloC,'/tmp/LChloC.tif')
 
 # je lance le calcul
 rM.run()
@@ -321,7 +321,7 @@ pltCM.addF1()
 
 ---
 
-## Apprentissage à partir d'un indice générée à la volée
+## Apprentissage à partir d'un indice généré à la volée
 ```python 
 mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
 
