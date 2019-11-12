@@ -1,5 +1,9 @@
 # Atelier SAGEO2019 : Télédétection avec MuseoToolBox
-*Cet atelier ne nécessite pas de compétences avancées en python*
+*Cet atelier ne nécessite pas de compétences avancées en python*.
+
+*[La présentation est consultable en ligne](https://nkarasiak.github.io/atelier_SAGEO2019).*
+
+*[Le jeu de données de tests est à télécharger](https://github.com/nkarasiak/atelier_SAGEO2019/archive/data.zip).*
 
 [MuseoToolBox](https://github.com/lennepkade/MuseoToolBox]) est une bibliothèque python développée par [Nicolas Karasiak](http://wwww.karasiak.net) dans le cadre de sa thèse sur la classification des essences forestières. Dans un soucis de reproductibilité de ses travaux (que ce soit tant pour lui, pour la fiabilité de ses travaux ou pour promouvoir les bonnes pratiques), cette bibliothèque permet d'automatiser et de faciliter de nombreuses opérations courantes dans notre domaine. En effet, plus besoin de gérer les nombreux à-côtés parfois longs et fastidieux de la gestion des rasters ou des vecteurs en python (lecture/écriture des images avec compression automatique, opération mathématique sur un raster, extraction des valeurs des pixels pour chaque polygone, apprentissage automatique à partir de raster ou de son indice généré à la volée...).
 
