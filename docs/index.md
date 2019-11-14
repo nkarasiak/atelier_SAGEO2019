@@ -214,7 +214,7 @@ X = mtb.raster_tools.getSamplesFromROI(raster,vector)
 # extraire les valeurs spectrales et la valeur de la colonne 'class'
 X,y = mtb.raster_tools.getSamplesFromROI(raster,vector,'class')
 
-# extraire les valeurs spectrales et deux colonnes (exemple avec 2 fois 'class')
+# extraire les valeurs spectrales et deux colonnes (exemple avec la colonne 'class' et le colonne 'group')
 X,y,g = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','group')
 ```
 Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/raster_tools/extractRasterValues.html
