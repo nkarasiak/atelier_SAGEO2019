@@ -77,7 +77,7 @@
 
 raster = <span class="hljs-string">'sentinel2_31_20180815.tif'</span>
 <span class="hljs-comment"># J'initialise l'instance rasterMath</span>
-rM = rasterMath(raster)
+rM = mtb.raster_tools.rasterMath(raster)
 
 <span class="hljs-comment"># Je demande un échantillon de mon image</span>
 X = rM.getRandomBlock()

@@ -103,7 +103,7 @@ import museotoolbox as mtb
 
 raster = 'sentinel2_31_20180815.tif'
 # J'initialise l'instance rasterMath
-rM = rasterMath(raster)
+rM = mtb.raster_tools.rasterMath(raster)
 
 # Je demande un échantillon de mon image
 X = rM.getRandomBlock()
