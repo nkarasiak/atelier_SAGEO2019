@@ -11,9 +11,9 @@ import museotoolbox as mtb
 raster = '/home/nicolas/Bureau/atelier_SAGEO2019-data/sentinel2_3a_20180815.tif'
 vector = '/home/nicolas/Bureau/atelier_SAGEO2019-data/ROI.gpkg'
 
-rM = mtb.raster_tools.rasterMath(raster)
+rM = mtb.processing.RasterMath(raster)
 
-x = rM.getRandomBlock()
+x = rM.get_random_block()
 
 def ndvi(x):
     num = x[:,3]-x[:,2]
@@ -24,7 +24,7 @@ def ndvi(x):
     
 print(ndvi(x))
 
-rM.addFunction(ndvi,'/tmp/ndvi.tif')
+rM.add_function(ndvi,'/tmp/ndvi.tif')
 
 #rM.run()
 ##
@@ -34,7 +34,7 @@ def LChloC(x):
 
 LChloC(x)
 
-rM.addFunction(LChloC,'/tmp/LChloC.tif')
+rM.add_function(LChloC,'/tmp/LChloC.tif')
 rM.run()
 
 ####
@@ -45,19 +45,16 @@ classifier = RandomForestClassifier(random_state=12,n_jobs=1)
 
 mtb.learn_tools.learnAndPredict()
 cv = mtb.cross_validation.LeaveOneSubGroupOut()
-X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','group')
+X,y,group = mtb.processing.extract_ROI(raster,vector,'class','group')
 
-mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
+mymodel = mtb.ai.SuperLearner(n_jobs=4,verbose=1,classifier=classifier,param_grid=dict(n_estimators=[100,200]))
 
 # entrainement à partir d'un vecteur avec standardisation (centré/réduit)
-mymodel.customizeX(LChloC)
+mymodel.customize_array(LChloC)
 
-mymodel.learnFromVector(X,y,group=group,cv=cv,
-    classifier=classifier,
-    param_grid=dict(n_estimators=[100,200]),
-    standardize=True)
-mymodel.predictRaster(raster,'/tmp/LChloC_map.tif')
-mymodel.saveCMFromCV('/tmp/matrices/')
-mymodel.getStatsFromCV()
+mymodel.fit(X,y,group=group,cv=cv,standardize=True)
+mymodel.predict_image(raster,'/tmp/LChloC_map.tif')
+mymodel.save_CM_from_CV('/tmp/matrices/')
+mymodel.get_stats_from_CV()
 
 mymodel.model.best_estimator_

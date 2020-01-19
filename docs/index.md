@@ -38,7 +38,7 @@ https://www.github.com/nkarasiak/atelier_SAGEO2019
 ## Qu'est-ce que MuseoToolBox ?
 MuseoToolBox est une bibliothèque dévelopée en python3 par [Nicolas Karasiak](https://www.karasiak.net).
 
-![center](figures/mtb_uml.png)
+![center](figures/mtb_schema.png)
 
 ---
 
@@ -70,14 +70,14 @@ Voir le tutorial ici : https://github.com/nkarasiak/atelier_SAGEO2019
 
 ---
 
-## Principe de rasterMath
-rasterMath est la clé de voute de MuseoToolBox. Cette classe est utilisée pour lire et écrire sur les images de manière optimisée.
+## Principe de RasterMath
+RasterMath est la clé de voute de MuseoToolBox. Cette classe est utilisée pour lire et écrire sur les images de manière optimisée.
 
 La plupart des utilisations d'un raster dans notre domaine se fait pixel par pixel, c'est-à-dire que l'on n'a pas besoin de l'information des pixels voisins, mais que l'on traite la plupart du temps un pixel avec l'ensemble de ses bandes. C'est par exemple le cas quand on calcule l'indice NDVI.
 
 ---
 
-**rasterMath** permet donc de lire une image et de ne recevoir que l'information par lot de pixels :
+**RasterMath** permet donc de lire une image et de ne recevoir que l'information par lot de pixels :
 
 ![center](figures/raster_math_3dto2d.png)
 
@@ -101,19 +101,17 @@ La plupart des utilisations d'un raster dans notre domaine se fait pixel par pix
 import numpy as np
 import museotoolbox as mtb
 
-raster = 'sentinel2_31_20180815.tif'
+raster = 'sentinel2_3a_20180815.tif'
 # J'initialise l'instance rasterMath
-rM = mtb.raster_tools.rasterMath(raster)
+rM = mtb.processing.RasterMath(raster)
 
 # Je demande un échantillon de mon image
-X = rM.getRandomBlock()
+X = rM.get_random_block()
+# >>> Total number of blocks : 20
 
 # La dimension de l'échantillon
 print(X.shape)
->>> (15840, 10)
-# mon échantillon contient 15840 pixels de 10 bandes chacun
-# J'affiche la totalité
-print(X) 
+# >>> (45056, 10)
  ```
  ---
 
@@ -166,12 +164,14 @@ Il faut maintenant l'ajouter à votre instance de rasterMath.
 ```python
 
 # Ajoute une fonction et un chemin pour écrire le résultat (fichier tif)
-rM.addFunction(calcul_ndvi,'/tmp/ndvi.tif')
+rM.add_function(calcul_ndvi,'/tmp/ndvi.tif')
+# >>> Using datatype from numpy table : float64.
+# >>> Detected 1 band for function calcul_ndvi.
 
 # Je lance le calcul et l'écriture
 rM.run()
 ```
- Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/raster_tools/museotoolbox.raster_tools.rasterMath.html
+ Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/processing/museotoolbox.processing.RasterMath.html
  
 ---
 
@@ -185,16 +185,16 @@ L'indice de chlorophylle est le quotient du rededge 3 (B7) et le rededge 1 (B5).
 ### Solution
 ```python
 import museotoolbox as mtb
-rM = mtb.raster_tools.rasterMath(raster)
+rM = mtb.processing.RasterMath(raster)
 
 def calcul_LChloC(X):
     return np.divide(X[:,6],X[:,4])
 # Je teste si cela fonctionne
-X = rM.getRandomBlock()
+X = rM.get_random_block()
 print(calcul_LChloC(X)) 
 
 # LChloC
-rM.addFunction(calcul_LChloC,'/tmp/LChloC.tif')
+rM.add_function(calcul_LChloC,'/tmp/LChloC.tif')
 
 # je lance le calcul
 rM.run()
@@ -206,32 +206,32 @@ rM.run()
 ```python
 import museotoolbox as mtb
 
-raster = 'sentinel2_31_20180815.tif'
+raster = 'sentinel2_3a_20180815.tif'
 vector = 'ROI.gpkg'
 # extraire uniquement les valeurs spectrales
-X = mtb.raster_tools.getSamplesFromROI(raster,vector)
+X = mtb.processing.extract_ROI(raster,vector)
 
 # extraire les valeurs spectrales et la valeur de la colonne 'class'
-X,y = mtb.raster_tools.getSamplesFromROI(raster,vector,'class')
+X,y = mtb.processing.extract_ROI(raster,vector,'class')
 
 # extraire les valeurs spectrales et deux colonnes (exemple avec la colonne 'class' et le colonne 'group')
-X,y,g = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','group')
+X,y,g = mtb.processing.extract_ROI(raster,vector,'class','group')
 ```
-Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/raster_tools/extractRasterValues.html
+Exemple complet sur : https://museotoolbox.readthedocs.io/en/latest/auto_examples/processing/extractRasterValues.html
 
 
 ---
 
-## Principes de learnAndPredict
+## Principes de SuperLearner
 
 Permet de faire de l'apprentissage automatique depuis un raster ou un vecteur. Vous choisissez : 
 - l'algorithme et ses paramètres
 - la validation croisée
-- l'indice de qualité (accord global, kappa)
+- l'indice de qualité (accord global, f1, kappa)
 
 ---
 
-### learnAndPredict gèrera 
+### SuperLearner gèrera 
 - la standardisation des données
 - la sauvegarde du modèle
 - le calcul des indices de qualité de chaque pli (issu des validations croisées)
@@ -245,75 +245,66 @@ Permet de faire de l'apprentissage automatique depuis un raster ou un vecteur. V
 ```python
 from sklearn.ensemble import RandomForestClassifier
 classifier = RandomForestClassifier(random_state=12,n_jobs=1)
+param_grid = dict(n_estimators=[10,100]) # 10 et 100 arbres
 
 # initialisation de la classe avec 4 coeurs pour les validations croisées
 # verbose=1 signifie qu'on aura des infos lors de l'apprentissage
-mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
+mymodel = mtb.ai.SuperLearner(classifier=classifier,param_grid=param_grid,verbose=1,n_jobs=4)
 
 # crée une validation croisée par groupe (LOO par groupe)
 cv = mtb.cross_validation.LeaveOneSubGroupOut()
 ```
 
-Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/learn_tools/museotoolbox.learn_tools.learnAndPredict.html#museotoolbox.learn_tools.learnAndPredict
+Plus d'exemples sur : https://museotoolbox.readthedocs.io/en/latest/modules/ai/museotoolbox.ai.SuperLearner.html
 
 ---
 
-### Apprentissage à partir d'un vecteur
+### Apprentissage (fit)
 ```python
-X,y,group = mtb.raster_tools.getSamplesFromROI(raster,vector,'class','group')
+X,y,group = mtb.processing.extract_ROI(raster,vector,'class','group')
 
 # entrainement à partir d'un vecteur avec standardisation (centré/réduit)
-mymodel.learnFromVector(X,y,group=group,cv=cv,
-    classifier=classifier,
-    param_grid=dict(n_estimators=[100,200]),
-    standardize=True)
+mymodel.fit(X,y,group=group,cv=cv,standardize=True)
+
+# le score de la meilleure prédiction
+mymodel.model.best_score_
 
 # prédiction d'un raster (même nombre de bandes que le tableau X)
-mymodel.predictRaster(raster,'classification.tif')
+mymodel.predict_image(raster,'classification.tif')
+
+# prédiction d'un raster (même nombre de bandes que le tableau X)
+mymodel.predict_array(X)
 ```
 ---
-### Apprentissage à partir d'un raster
-```python
-# entrainement à partir d'un raster
-mymodel.learnFromRaster(raster,vector,'Class',cv=5,
-    classifier=classifier,
-    param_grid=dict(n_estimators=[100,200]),
-    standardize=True)
-
-# prédiction d'un raster
-mymodel.predictRaster(raster,'classification.tif')
-```
-
----
-
 ## Estimer la qualité du modèle
 
+Estimer la qualité de chaque pli (fold) de la validation croisée.
 ```python
-CM = []
-OA = []
-for statsPerCv in mymodel.getStatsFromCV(kappa=True,OA=True):
-    CM.append(statsPerCv['confusionMatrix'])
-    OA.apppend(statsPerCv['OA'])
-
+CM,OA = [[],[]]
+for stat in mymodel.get_stats_from_cv(OA=True):
+    CM.append(stat['confusion_matrix'])
+    OA.ap   pend(stat['OA'])
 # Accord global moyen
 print(np.mean(OA))
+# >>> 0.8364946918347138
+print(OA)
+# >>> [0.7489387507580352, 0.9240506329113924]
 ```
 ---
 
 ## Calculer la matrice de confusion moyenne et le F1
 
 ```python
-
 from museotoolbox import charts
 from matplotlib.pyplot import cm as colorMap
 # average cm
 meanCM = np.mean(CM,axis=0).astype(np.int16)
 # Translate for Y = prediction and X = truth
-pltCM = charts.plotConfusionMatrix(meanCM.T) 
+pltCM = charts.PlotConfusionMatrix(meanCM.T) 
 # add value for each cell
-pltCM.addText()
+pltCM.add_text()
 # add F1
-pltCM.addF1()
+pltCM.add_f1()
 ```
 ---
 # Résultat
@@ -323,19 +314,16 @@ pltCM.addF1()
 
 ## Apprentissage à partir d'un indice généré à la volée
 ```python 
-mymodel = mtb.learn_tools.learnAndPredict(n_jobs=4,verbose=1)
+mymodel = mtb.ai.SuperLearner(n_jobs=4,verbose=1,classifier=classifier,param_grid=dict(n_estimators=[100,200]))
 
 # toutes les données en entrée seront converties selon votre fonction
-mymodel.customizeX(calcul_LChloC)
+mymodel.customize_array(calcul_LChloC)
 
 # le reste de la procédure est identifique
-mymodel.learnFromVector(X,y,group=group,cv=cv,
-    classifier=classifier,
-    param_grid=dict(n_estimators=[100,200]),
-    standardize=True)
+mymodel.fit(X,y,group=group,cv=cv,standardize=True)
 
 # prédiction d'un raster (même nombre de bandes que le tableau X)
-mymodel.predictRaster(raster,'classification_LChloC.tif')
+mymodel.predict_image(raster,'classification_LChloC.tif')
 ```
 
 ---
@@ -344,10 +332,10 @@ mymodel.predictRaster(raster,'classification_LChloC.tif')
 
 ```python
 # par défault, seuls les polygons sont non masqués 
-museotoolbox.raster_tools.rasterMaskFromVector(vector,raster,'/tmp/mask.tif')
+mtb.processing.image_mask_from_vector(vector,raster,'/tmp/mask.tif')
 
 # si vous voulez masquer uniquement les polygones 
-museotoolbox.raster_tools.rasterMaskFromVector(vector,raster,'/tmp/mask.tif',invert=True)
+mtb.processing.image_mask_from_vector(vector,raster,'/tmp/mask.tif',invert=True)
 
 ```
 

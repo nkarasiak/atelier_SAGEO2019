@@ -24,8 +24,8 @@ glob.os.system(cmd)
 
 
 import museotoolbox as mtb
-rM = mtb.raster_tools.rasterMath('/mnt/DATAssd/S2/demo_bouconne/sentinel2_3a_20180815.vrt')
+rM = mtb.processing.RasterMath('/mnt/DATAssd/S2/demo_bouconne/sentinel2_3a_20180815.vrt')
 def returnX(x):
     return x
-rM.addFunction(returnX,'/mnt/DATAssd/S2/demo_bouconne/sentinel2_3a_20180815.tif',compress='high')
+rM.add_function(returnX,'/mnt/DATAssd/S2/demo_bouconne/sentinel2_3a_20180815.tif',compress='high')
 rM.run()
